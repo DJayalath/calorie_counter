@@ -1,3 +1,4 @@
+import 'package:caloriecounter/entry_view.dart';
 import 'package:caloriecounter/food_entry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class DiaryState extends State<Diary> {
     }
 
     Future<Null> _loadDiaryEntries() async {
+        _diaryEntries.clear();
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
         setState(() {
@@ -35,11 +38,23 @@ class DiaryState extends State<Diary> {
         });
     }
 
-    String _humanReadableDate(DateTime date) {
-        var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    Future<Null> _removeEntry(DiaryEntry diaryEntry) async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove(diaryEntry.id);
+        setState(() {
+          _loadDiaryEntries();
+        });
+    }
 
-        return "${days[date.weekday]} ${months[date.month - 1]} ${date.day}, ${date.year}";
+    void _pushAddRoute(DiaryEntry diaryEntry) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EntryView(diaryEntry)),
+        ).then((value) {
+            setState(() {
+                _loadDiaryEntries();
+            });
+        });
     }
 
     @override
@@ -47,7 +62,7 @@ class DiaryState extends State<Diary> {
         return Scaffold(
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: null,
+                onPressed: () => _pushAddRoute(DiaryEntry()),
             ),
             backgroundColor: Theme
                 .of(context)
@@ -81,8 +96,9 @@ class DiaryState extends State<Diary> {
                     .colorScheme
                     .onPrimary,
                 child: ListTile(
+                    onTap: () => _pushAddRoute(diaryEntry),
                     title: Text(
-                        _humanReadableDate(diaryEntry.date),
+                        diaryEntry.humanReadableDate,
                         style: TextStyle(
                             color: Theme
                                 .of(context)
@@ -99,8 +115,9 @@ class DiaryState extends State<Diary> {
                                 .onBackground,
                         ),
                     ),
-                    trailing: Icon(
-                        Icons.edit,
+                    trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () => _removeEntry(diaryEntry),
                     ),
                 ),
             ),
