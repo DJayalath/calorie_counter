@@ -54,7 +54,7 @@ class DiaryEntry {
         var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-        return "${days[date.weekday]} ${months[date.month - 1]} ${date.day}, ${date.year}";
+        return "${days[date.weekday - 1]} ${months[date.month - 1]} ${date.day}, ${date.year}";
     }
 
     void addBreakfastItem(FoodEntry foodEntry) {

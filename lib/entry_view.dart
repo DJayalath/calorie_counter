@@ -98,7 +98,6 @@ class EntryViewState extends State<EntryView> {
                         itemCount: meal.length,
                         itemBuilder: (BuildContext context, int index) {
                             FoodEntry foodEntry = meal.elementAt(index);
-                            print(index);
                             return ListTile(
                                 title: Text(
                                     "${foodEntry.name} (x${foodEntry.quantity})",
@@ -195,6 +194,20 @@ class EntryViewState extends State<EntryView> {
                                         fontSize: 18.0,
                                     ),
                                 ),
+                                onTap: () async {
+                                    DateTime selectedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: widget.diaryEntry.date,
+                                        firstDate: DateTime(2018),
+                                        lastDate: DateTime(2030),
+                                    );
+
+                                    if (selectedDate != null) {
+                                        setState(() {
+                                            widget.diaryEntry.date = selectedDate;
+                                        });
+                                    }
+                                },
                             ),
                         ),
                     ),

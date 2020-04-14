@@ -37,6 +37,11 @@ class FoodViewState extends State<FoodView> {
                     FlatButton(
                         textColor: themeData.colorScheme.onBackground,
                         onPressed: () {
+                            widget.foodEntry.name = _nameController.text;
+
+                            // TODO: Sanitise input
+                            widget.foodEntry.calories = int.parse(_calController.text);
+
                             Navigator.pop(context, widget.foodEntry);
                         },
                         child: Text(

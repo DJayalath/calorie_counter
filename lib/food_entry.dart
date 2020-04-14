@@ -5,7 +5,7 @@ class FoodEntry {
     int quantity;
 
     FoodEntry.empty() {
-        name = "Undefined";
+        name = "";
         calories = 0;
         quantity = 1;
     }

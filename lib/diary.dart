@@ -1,5 +1,4 @@
 import 'package:caloriecounter/entry_view.dart';
-import 'package:caloriecounter/food_entry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,9 +28,6 @@ class DiaryState extends State<Diary> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
         setState(() {
-            DiaryEntry d = DiaryEntry();
-            d.addLunchItem(FoodEntry("Tuna Sandwich", 400, 1));
-            _diaryEntries.add(d);
             for (final k in prefs.getKeys()) {
                 _diaryEntries.add(DiaryEntry.fromJson(jsonDecode(prefs.get(k))));
             }
@@ -78,9 +74,6 @@ class DiaryState extends State<Diary> {
 
     Container _buildDiary(BuildContext context, int index) {
         DiaryEntry diaryEntry = _diaryEntries.elementAt(index);
-//        de.addBreakfastItem(FoodEntry("Cereal", 300, 1));
-//        String jsonString = jsonEncode(de);
-//        var decoded = DiaryEntry.fromJson(jsonDecode(jsonString));
         return Container(
             decoration: BoxDecoration(
                 color: Theme
@@ -107,7 +100,7 @@ class DiaryState extends State<Diary> {
                         ),
                     ),
                     subtitle: Text(
-                        "${diaryEntry.totalCalories}",
+                        "${diaryEntry.totalCalories} Calories",
                         style: TextStyle(
                             color: Theme
                                 .of(context)
