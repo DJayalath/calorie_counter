@@ -1,5 +1,10 @@
+import 'package:caloriecounter/food_entry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:convert';
+
+import 'diary_entry.dart';
 
 class Diary extends StatefulWidget {
     @override
@@ -27,6 +32,10 @@ class DiaryState extends State<Diary> {
     }
 
     Container _buildDiary(BuildContext context, int index) {
+        DiaryEntry de = DiaryEntry();
+        de.addBreakfastItem(FoodEntry("Cereal", 300, 1));
+        String jsonString = jsonEncode(de);
+        var decoded = DiaryEntry.fromJson(jsonDecode(jsonString));
         return Container(
             decoration: BoxDecoration(
                 color: Theme
@@ -52,7 +61,7 @@ class DiaryState extends State<Diary> {
                         ),
                     ),
                     subtitle: Text(
-                        "Placeholder Calories",
+                        "${de.totalCalories}",
                         style: TextStyle(
                             color: Theme
                                 .of(context)
