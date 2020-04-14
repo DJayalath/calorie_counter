@@ -50,7 +50,7 @@ class CalorieCounter extends StatelessWidget {
                 )
             ),
             home: DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Scaffold(
                     appBar: TabBar(
                         tabs: [
@@ -62,10 +62,15 @@ class CalorieCounter extends StatelessWidget {
                                 text: "Charts",
                                 icon: Icon(Icons.insert_chart),
                             ),
+                            Tab(
+                                text: "Settings",
+                                icon: Icon(Icons.settings),
+                            )
                         ],
                     ),
                     body: TabBarView(
                         children: [
+                            Diary(),
                             Diary(),
                             Diary(),
                         ],
