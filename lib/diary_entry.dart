@@ -1,7 +1,9 @@
 import 'food_entry.dart';
+import 'package:uuid/uuid.dart';
 
 class DiaryEntry {
 
+    String id;
     DateTime date = DateTime.now();
 
     List<FoodEntry> breakfast = new List();
@@ -9,9 +11,12 @@ class DiaryEntry {
     List<FoodEntry> dinner = new List();
     List<FoodEntry> other = new List();
 
-    DiaryEntry();
+    DiaryEntry() {
+        var uuid = Uuid();
+        id = uuid.v1();
+    }
 
-    DiaryEntry.full({this.date, this.breakfast, this.lunch, this.dinner, this.other});
+    DiaryEntry.full({this.id, this.date, this.breakfast, this.lunch, this.dinner, this.other});
 
     factory DiaryEntry.fromJson(Map<String, dynamic> json) {
 
@@ -26,6 +31,7 @@ class DiaryEntry {
         List<FoodEntry> otherList = oList.map((i) => FoodEntry.fromJson(i)).toList();
 
         return DiaryEntry.full(
+            id: json['id'],
             date: DateTime.fromMillisecondsSinceEpoch(int.parse(json['date'])),
             breakfast: breakfastList,
             lunch: lunchList,
@@ -36,6 +42,7 @@ class DiaryEntry {
 
     Map<String, dynamic> toJson() =>
         {
+            'id': id,
             'date': date.millisecondsSinceEpoch.toString(),
             'breakfast': breakfast.map((i) => i.toJson()).toList(),
             'lunch': lunch.map((i) => i.toJson()).toList(),
