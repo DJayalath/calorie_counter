@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'diary_entry.dart';
+import 'food_view.dart';
 
 class EntryView extends StatefulWidget {
 
@@ -41,6 +42,7 @@ class EntryViewState extends State<EntryView> {
                 total = widget.diaryEntry.totalDinner;
                 break;
             case "Other":
+                mealName = "Snacks";
                 meal = widget.diaryEntry.other;
                 total = widget.diaryEntry.totalOther;
                 break;
@@ -63,6 +65,23 @@ class EntryViewState extends State<EntryView> {
                                     fontWeight: FontWeight.bold,
                                 )
                             ),
+                            leading: IconButton(
+                                icon: Icon(
+                                    Icons.add,
+                                    color: Color(0xff0f3433),
+                                ),
+                                onPressed: () async {
+                                    var result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FoodView(FoodEntry.empty())),
+                                    );
+                                    if (result != null) {
+                                        setState(() {
+                                            meal.add(result);
+                                        });
+                                    }
+                                },
+                            ),
                             trailing: Text(
                                 "$total Calories",
                                 style: TextStyle(
@@ -82,7 +101,7 @@ class EntryViewState extends State<EntryView> {
                             print(index);
                             return ListTile(
                                 title: Text(
-                                    foodEntry.name,
+                                    "${foodEntry.name} (x${foodEntry.quantity})",
                                     style: TextStyle(
                                         color: themeData.colorScheme.primaryVariant,
                                     )
@@ -104,6 +123,17 @@ class EntryViewState extends State<EntryView> {
                                         });
                                     },
                                 ),
+                                onTap: () async {
+                                    var result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FoodView(foodEntry)),
+                                    );
+                                    if (result != null) {
+                                        setState(() {
+                                            meal[index] = result;
+                                        });
+                                    }
+                                },
                             );
                         },
                     ),
@@ -148,7 +178,6 @@ class EntryViewState extends State<EntryView> {
                                 .colorScheme
                                 .primaryVariant,
                             child: ListTile(
-//                                onTap: () => _pushAddRoute(diaryEntry),
                                 title: Text(
                                     widget.diaryEntry.humanReadableDate,
                                     style: TextStyle(

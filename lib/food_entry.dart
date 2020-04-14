@@ -4,6 +4,12 @@ class FoodEntry {
     int calories;
     int quantity;
 
+    FoodEntry.empty() {
+        name = "Undefined";
+        calories = 0;
+        quantity = 1;
+    }
+
     FoodEntry(this.name, this.calories, this.quantity);
 
     FoodEntry.fromJson(Map<String, dynamic> json)
