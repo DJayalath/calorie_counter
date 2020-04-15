@@ -51,11 +51,15 @@ class DiaryEntry {
             'other': other.map((i) => i.toJson()).toList(),
         };
 
-    String get humanReadableDate {
+    String get humanReadableDay {
         var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        return "${days[date.weekday - 1]}";
+    }
+
+    String get humanReadableDate {
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-        return "${days[date.weekday - 1]} ${months[date.month - 1]} ${date.day}, ${date.year}";
+        return "$humanReadableDay ${months[date.month - 1]} ${date.day}, ${date.year}";
     }
 
     void addBreakfastItem(FoodEntry foodEntry) {

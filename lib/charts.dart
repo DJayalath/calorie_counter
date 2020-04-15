@@ -44,6 +44,10 @@ class ChartState extends State<Charts> {
               customSeriesRenderers: [
                   new charts.LineRendererConfig(
                       customRendererId: 'customLine',
+                      includeLine: true,
+                      includePoints: false,
+                      dashPattern: [4, 4],
+                      strokeWidthPx: 8,
                   )
               ],
 //              barGroupingType: charts.BarGroupingType.stacked,
@@ -90,34 +94,37 @@ class ChartState extends State<Charts> {
         // Trim list
         _diaryEntries = _diaryEntries.sublist(0, numDataPoints);
 
+        // Sort such that most recent is at end
+        _diaryEntries.sort((a, b) => a.date.compareTo(b.date));
+
         final breakfastData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, day.totalBreakfast)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalBreakfast)
         ];
 
         final lunchData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, day.totalLunch)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalLunch)
         ];
 
         final dinnerData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, day.totalDinner)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalDinner)
         ];
 
         final otherData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, day.totalOther)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalOther)
         ];
 
         final targetLine = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, 1800)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, 1800)
         ];
 
         double avg = 0;
-        for (var day in _diaryEntries) {
+        for (var day in _diaryEntries.sublist(0, numDataPoints - 1)) {
             avg += day.totalCalories;
         }
-        avg = avg / numDataPoints;
+        avg = avg / (numDataPoints - 1);
 
         final avgLine = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDate, avg.round())
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, avg.round())
         ];
 
         return [
@@ -156,8 +163,6 @@ class ChartState extends State<Charts> {
 
             charts.Series<ChartEntry, String>(
                 id: 'Target',
-                strokeWidthPxFn: (_, __) => 5,
-                dashPatternFn: (_, __) => [8, 8],
                 domainFn: (ChartEntry c, _) => c.date,
                 measureFn: (ChartEntry c, _) => c.calories,
                 data: targetLine,
@@ -167,8 +172,6 @@ class ChartState extends State<Charts> {
 
             charts.Series<ChartEntry, String>(
                 id: 'Average',
-                strokeWidthPxFn: (_, __) => 5,
-                dashPatternFn: (_, __) => [8, 8],
                 domainFn: (ChartEntry c, _) => c.date,
                 measureFn: (ChartEntry c, _) => c.calories,
                 data: avgLine,
