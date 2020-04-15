@@ -31,6 +31,9 @@ class DiaryState extends State<Diary> {
             for (final k in prefs.getKeys()) {
                 _diaryEntries.add(DiaryEntry.fromJson(jsonDecode(prefs.get(k))));
             }
+
+            // Sort such that most recent is displayed first
+            _diaryEntries.sort((b, a) => a.date.compareTo(b.date));
         });
     }
 
