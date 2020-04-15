@@ -81,6 +81,17 @@ class FoodViewState extends State<FoodView> {
                             borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
                         child: ListTile(
+                            leading: Align(
+                                widthFactor: 1.0,
+                                alignment: Alignment.centerLeft,
+                              child: Text(
+                                  "Calories",
+                                  style: TextStyle(
+                                      color: Color(0xff0f3433),
+                                      fontSize: 18.0,
+                                  ),
+                              ),
+                            ),
                             title: TextField(
                                 controller: _calController,
                                 decoration: InputDecoration(
