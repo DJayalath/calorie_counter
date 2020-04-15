@@ -1,4 +1,5 @@
 import 'package:caloriecounter/entry_view.dart';
+import 'package:caloriecounter/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,26 +24,16 @@ class DiaryState extends State<Diary> {
     }
 
     Future<Null> _loadDiaryEntries() async {
-        _diaryEntries.clear();
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-
+        var loadedEntries = await loadDiaryEntries();
         setState(() {
-            for (final k in prefs.getKeys()) {
-                _diaryEntries.add(DiaryEntry.fromJson(jsonDecode(prefs.get(k))));
-            }
-
-            // Sort such that most recent is displayed first
-            _diaryEntries.sort((b, a) => a.date.compareTo(b.date));
+            _diaryEntries = loadedEntries;
         });
     }
 
     Future<Null> _removeEntry(DiaryEntry diaryEntry) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove(diaryEntry.id);
-        setState(() {
-          _loadDiaryEntries();
-        });
+        await _loadDiaryEntries();
     }
 
     void _pushAddRoute(DiaryEntry diaryEntry) {

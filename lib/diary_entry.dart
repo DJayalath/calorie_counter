@@ -11,6 +11,7 @@ class DiaryEntry {
     List<FoodEntry> dinner = new List();
     List<FoodEntry> other = new List();
 
+    // Generates a time-based UUID
     DiaryEntry() {
         var uuid = Uuid();
         id = uuid.v1();

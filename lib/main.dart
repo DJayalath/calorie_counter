@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'charts.dart';
 import 'diary.dart';
 
 void main() => runApp(CalorieCounter());
@@ -71,7 +72,7 @@ class CalorieCounter extends StatelessWidget {
                     body: TabBarView(
                         children: [
                             Diary(),
-                            Diary(),
+                            Charts(),
                             Diary(),
                         ],
                     )
