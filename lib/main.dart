@@ -1,3 +1,4 @@
+import 'package:caloriecounter/settings.dart';
 import 'package:flutter/material.dart';
 
 import 'charts.dart';
@@ -38,6 +39,7 @@ class CalorieCounter extends StatelessWidget {
 //                accentColor: Color(0xff3caea3),
                 scaffoldBackgroundColor: Color(0xfff2f4f6),
                 backgroundColor: Color(0xfffffffe),
+                errorColor: Color(0xffff5470),
 
                 iconTheme: IconThemeData(
                     color: Color(0xffadafb8),
@@ -133,7 +135,7 @@ class CalorieCounter extends StatelessWidget {
                         children: [
                             Diary(),
                             Charts(),
-                            Diary(),
+                            Settings(),
                         ],
                     )
                 )

@@ -1,4 +1,5 @@
 import 'package:caloriecounter/food_entry.dart';
+import 'package:caloriecounter/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,9 +21,27 @@ class EntryView extends StatefulWidget {
 
 class EntryViewState extends State<EntryView> {
 
+    int target = 1800;
+
+    @override
+    void initState() {
+        super.initState();
+        _loadTarget();
+    }
+
     Future<Null> _saveEntry() async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(widget.diaryEntry.id, jsonEncode(widget.diaryEntry.toJson()));
+    }
+
+    Future<Null> _loadTarget() async {
+        // Load calorie target
+        var t = await loadValue("SX_target");
+        if (t != null) {
+            setState(() {
+                target = t;
+            });
+        }
     }
 
     Card _buildMealCard(String mealName, ThemeData themeData) {
@@ -186,7 +205,7 @@ class EntryViewState extends State<EntryView> {
                                   trailing: Text(
                                       "${widget.diaryEntry.totalCalories} Calories",
                                       style: TextStyle(
-                                          color: Theme.of(context).textTheme.headline.color,
+                                          color: (widget.diaryEntry.totalCalories < target) ? Theme.of(context).textTheme.headline.color : Theme.of(context).errorColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0,
                                       ),

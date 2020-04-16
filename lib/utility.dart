@@ -9,7 +9,8 @@ Future<List<DiaryEntry>> loadDiaryEntries() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    for (final k in prefs.getKeys()) {
+    // Loop over all keys ignoring those that belong to settings (begin with 'SX')
+    for (final k in prefs.getKeys().where((String key) => !key.contains(RegExp(r'^SX')))) {
         diaryEntries.add(DiaryEntry.fromJson(jsonDecode(prefs.get(k))));
     }
 
@@ -17,4 +18,12 @@ Future<List<DiaryEntry>> loadDiaryEntries() async {
     diaryEntries.sort((b, a) => a.date.compareTo(b.date));
 
     return diaryEntries;
+}
+
+Future<dynamic> loadValue(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(key))
+        return prefs.get(key);
+    else
+        return null;
 }

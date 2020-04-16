@@ -16,11 +16,13 @@ class Diary extends StatefulWidget {
 class DiaryState extends State<Diary> {
 
     List<DiaryEntry> _diaryEntries = new List();
+    int target = 1800;
 
     @override
     void initState() {
         super.initState();
         _loadDiaryEntries();
+        _loadTarget();
     }
 
     Future<Null> _loadDiaryEntries() async {
@@ -28,6 +30,16 @@ class DiaryState extends State<Diary> {
         setState(() {
             _diaryEntries = loadedEntries;
         });
+    }
+
+    Future<Null> _loadTarget() async {
+        // Load calorie target
+        var t = await loadValue("SX_target");
+        if (t != null) {
+            setState(() {
+                target = t;
+            });
+        }
     }
 
     Future<Null> _removeEntry(DiaryEntry diaryEntry) async {
@@ -83,7 +95,7 @@ class DiaryState extends State<Diary> {
                     subtitle: Text(
                         "${diaryEntry.totalCalories} Calories",
                         style: TextStyle(
-                            color: Theme.of(context).textTheme.subtitle.color,
+                            color: (diaryEntry.totalCalories < target) ? Theme.of(context).textTheme.subtitle.color : Theme.of(context).errorColor,
                         ),
                     ),
                     trailing: IconButton(
