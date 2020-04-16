@@ -35,7 +35,7 @@ class FoodViewState extends State<FoodView> {
                 ),
                 actions: <Widget>[
                     FlatButton(
-                        textColor: themeData.colorScheme.onBackground,
+                        textColor: themeData.primaryIconTheme.color,
                         onPressed: () {
                             widget.foodEntry.name = _nameController.text;
 
@@ -56,10 +56,7 @@ class FoodViewState extends State<FoodView> {
                     Container(
                         margin: EdgeInsets.symmetric(vertical: 5.0),
                         decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onPrimary,
+                            color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
                         child: ListTile(
@@ -74,10 +71,7 @@ class FoodViewState extends State<FoodView> {
                     Container(
                         margin: EdgeInsets.symmetric(vertical: 5.0),
                         decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onPrimary,
+                            color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
                         child: ListTile(
@@ -87,8 +81,8 @@ class FoodViewState extends State<FoodView> {
                               child: Text(
                                   "Calories",
                                   style: TextStyle(
-                                      color: Color(0xff0f3433),
-                                      fontSize: 18.0,
+                                      color: Theme.of(context).textTheme.subtitle.color,
+                                      fontSize: 16.0,
                                   ),
                               ),
                             ),
@@ -103,10 +97,7 @@ class FoodViewState extends State<FoodView> {
                     Container(
                         margin: EdgeInsets.symmetric(vertical: 5.0),
                         decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onPrimary,
+                            color: Theme.of(context).backgroundColor,
                             borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
                         child: ListTile(

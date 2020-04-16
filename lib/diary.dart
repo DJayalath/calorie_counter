@@ -54,10 +54,6 @@ class DiaryState extends State<Diary> {
                 child: Icon(Icons.add),
                 onPressed: () => _pushAddRoute(DiaryEntry()),
             ),
-            backgroundColor: Theme
-                .of(context)
-                .colorScheme
-                .surface,
             body: ListView.builder(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 itemCount: _diaryEntries.length,
@@ -70,40 +66,31 @@ class DiaryState extends State<Diary> {
         DiaryEntry diaryEntry = _diaryEntries.elementAt(index);
         return Container(
             decoration: BoxDecoration(
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .background,
+                color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
             child: ListTileTheme(
-                iconColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .onPrimary,
+//                iconColor: Theme.of(context).hintColor,
                 child: ListTile(
                     onTap: () => _pushAddRoute(diaryEntry),
                     title: Text(
                         diaryEntry.humanReadableDate,
                         style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onPrimary,
+                            color: Theme.of(context).textTheme.title.color,
                         ),
                     ),
                     subtitle: Text(
                         "${diaryEntry.totalCalories} Calories",
                         style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .onBackground,
+                            color: Theme.of(context).textTheme.subtitle.color,
                         ),
                     ),
                     trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: Icon(
+                            Icons.delete,
+                            color: Theme.of(context).iconTheme.color,
+                        ),
                         onPressed: () => _removeEntry(diaryEntry),
                     ),
                 ),

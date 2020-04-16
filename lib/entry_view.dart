@@ -50,7 +50,7 @@ class EntryViewState extends State<EntryView> {
 
         return Card(
             margin: EdgeInsets.symmetric(vertical: 5.0),
-            color: themeData.colorScheme.onPrimary,
+            color: themeData.backgroundColor,
             child: Column(
                 children: <Widget>[
                     Container(
@@ -60,7 +60,7 @@ class EntryViewState extends State<EntryView> {
                             title: Text(
                                 mealName,
                                 style: TextStyle(
-                                    color: themeData.colorScheme.primaryVariant,
+                                    color: themeData.textTheme.title.color,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                 )
@@ -68,7 +68,7 @@ class EntryViewState extends State<EntryView> {
                             leading: IconButton(
                                 icon: Icon(
                                     Icons.add,
-                                    color: Color(0xff0f3433),
+                                    color: themeData.primaryIconTheme.color,
                                 ),
                                 onPressed: () async {
                                     var result = await Navigator.push(
@@ -85,7 +85,7 @@ class EntryViewState extends State<EntryView> {
                             trailing: Text(
                                 "$total Calories",
                                 style: TextStyle(
-                                    color: themeData.colorScheme.primaryVariant,
+                                    color: themeData.textTheme.title.color,
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                 )
@@ -102,19 +102,19 @@ class EntryViewState extends State<EntryView> {
                                 title: Text(
                                     "${foodEntry.name} (x${foodEntry.quantity})",
                                     style: TextStyle(
-                                        color: themeData.colorScheme.primaryVariant,
+                                        color: themeData.textTheme.title.color,
                                     )
                                 ),
                                 subtitle: Text(
                                     "${foodEntry.totalCalories} Calories",
                                     style: TextStyle(
-                                        color: Color(0xff0f3433),
+                                        color: themeData.textTheme.subtitle.color,
                                     )
                                 ),
                                 trailing: IconButton(
                                     icon: Icon(
                                         Icons.delete,
-                                        color: Color(0xff0f3433),
+                                        color: themeData.iconTheme.color,
                                     ),
                                     onPressed: () {
                                         setState(() {
@@ -151,7 +151,7 @@ class EntryViewState extends State<EntryView> {
                 ),
                 actions: <Widget>[
                     FlatButton(
-                        textColor: themeData.colorScheme.onBackground,
+                        textColor: themeData.primaryIconTheme.color,
                         onPressed: () {
                             _saveEntry();
                             Navigator.pop(context);
@@ -165,51 +165,49 @@ class EntryViewState extends State<EntryView> {
             body: ListView(
                 padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                 children: <Widget>[
-                    Container(
-                        decoration: BoxDecoration(
-                            color: themeData.colorScheme.onPrimary,
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
+                    Card(
                         margin: EdgeInsets.symmetric(vertical: 5.0),
-                        child: ListTileTheme(
-                            iconColor: Theme
-                                .of(context)
-                                .colorScheme
-                                .primaryVariant,
-                            child: ListTile(
-                                title: Text(
-                                    widget.diaryEntry.humanReadableDate,
-                                    style: TextStyle(
-                                        color: Theme
-                                            .of(context)
-                                            .colorScheme
-                                            .primaryVariant,
-                                    ),
-                                ),
-                                trailing: Text(
-                                    "${widget.diaryEntry.totalCalories} Calories",
-                                    style: TextStyle(
-                                        color: Color(0xff0f3433),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                    ),
-                                ),
-                                onTap: () async {
-                                    DateTime selectedDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: widget.diaryEntry.date,
-                                        firstDate: DateTime(2018),
-                                        lastDate: DateTime(2030),
-                                    );
+                        color: themeData.backgroundColor,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: themeData.colorScheme.onPrimary,
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          ),
+                          margin: EdgeInsets.symmetric(vertical: 10.0),
+                          child: ListTileTheme(
+                              child: ListTile(
+                                  title: Text(
+                                      widget.diaryEntry.humanReadableDate,
+                                      style: TextStyle(
+                                          color: Theme.of(context).textTheme.title.color,
+                                          fontWeight: FontWeight.bold,
+                                      ),
+                                  ),
+                                  trailing: Text(
+                                      "${widget.diaryEntry.totalCalories} Calories",
+                                      style: TextStyle(
+                                          color: Theme.of(context).textTheme.headline.color,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                      ),
+                                  ),
+                                  onTap: () async {
+                                      DateTime selectedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: widget.diaryEntry.date,
+                                          firstDate: DateTime(2018),
+                                          lastDate: DateTime(2030),
+                                      );
 
-                                    if (selectedDate != null) {
-                                        setState(() {
-                                            widget.diaryEntry.date = selectedDate;
-                                        });
-                                    }
-                                },
-                            ),
-                        ),
+                                      if (selectedDate != null) {
+                                          setState(() {
+                                              widget.diaryEntry.date = selectedDate;
+                                          });
+                                      }
+                                  },
+                              ),
+                          ),
+                      ),
                     ),
                     _buildMealCard("Breakfast", themeData),
                     _buildMealCard("Lunch", themeData),
