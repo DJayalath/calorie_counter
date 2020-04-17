@@ -21,8 +21,88 @@ class DiaryState extends State<Diary> {
     @override
     void initState() {
         super.initState();
-        _loadDiaryEntries();
-        _loadTarget();
+        _loadDiaryEntries().then((onValue) {
+            _loadTarget().then((onValue) {
+               _congratsMessage();
+            });
+        });
+    }
+
+    bool congrats = false;
+    Future<Null> _congratsMessage() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        if (_diaryEntries.first.totalCalories <= target) {
+            if (DateTime
+                .now()
+                .hour >= 22) {
+                if (prefs.containsKey("SX_congratsGiven")) {
+                    congrats = prefs.getBool("SX_congratsGiven");
+                } else {
+                    prefs.setBool("SX_congratsGiven", false);
+                }
+
+                if (!congrats) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return AlertDialog(
+                                title: Text(
+                                    "Well done!",
+                                    style: TextStyle(
+                                        color: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .title
+                                            .color,
+//                                    fontStyle: FontStyle.normal,
+                                    ),
+                                ),
+                                content: Text(
+                                    "You've stayed under your limit of $target calories today.\nKeep up the good work!",
+                                    style: TextStyle(
+                                        color: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1
+                                            .color,
+                                    ),
+                                ),
+                                actions: <Widget>[
+                                    FlatButton(
+                                        child: Text(
+                                            "CLOSE",
+                                            style: TextStyle(
+                                                color: Theme
+                                                    .of(context)
+                                                    .primaryIconTheme
+                                                    .color,
+                                            ),
+                                        ),
+                                        onPressed: () {
+                                            Navigator.pop(context);
+                                        },
+                                    )
+                                ],
+                            );
+                        }
+                    ).then((val) {
+                        congrats = true;
+                        prefs.setBool("SX_congratsGiven", true);
+                    });
+                }
+            } else {
+                if (prefs.containsKey("SX_congratsGiven")) {
+                    congrats = prefs.getBool("SX_congratsGiven");
+                    if (congrats) {
+                        congrats = false;
+                        prefs.setBool("SX_congratsGiven", false);
+                    }
+                } else {
+                    prefs.setBool("SX_congratsGiven", false);
+                }
+            }
+        }
     }
 
     Future<Null> _loadDiaryEntries() async {
