@@ -112,7 +112,6 @@ class SettingsState extends State<Settings> {
                             ),
                             onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                    // TODO: Sanitise input
                                     _saveSetting("target", int.parse(_targetController.text));
                                     setState(() {
                                         target = int.parse(_targetController.text);
