@@ -27,3 +27,14 @@ Future<dynamic> loadValue(String key) async {
     else
         return null;
 }
+
+String numberValidator(String value) {
+    if(value == null) {
+        return null;
+    }
+    final n = int.tryParse(value);
+    if(n == null || n < 0) {
+        return 'Not a valid number';
+    }
+    return null;
+}

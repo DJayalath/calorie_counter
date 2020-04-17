@@ -1,4 +1,5 @@
 import 'package:caloriecounter/food_entry.dart';
+import 'package:caloriecounter/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class FoodViewState extends State<FoodView> {
 
     TextEditingController _nameController;
     TextEditingController _calController;
+    final _formKey = GlobalKey<FormState>();
 
     @override
     void initState() {
@@ -37,12 +39,14 @@ class FoodViewState extends State<FoodView> {
                     FlatButton(
                         textColor: themeData.primaryIconTheme.color,
                         onPressed: () {
-                            widget.foodEntry.name = _nameController.text;
 
-                            // TODO: Sanitise input
-                            widget.foodEntry.calories = int.parse(_calController.text);
+                            if (_formKey.currentState.validate()) {
+                                widget.foodEntry.name = _nameController.text;
 
-                            Navigator.pop(context, widget.foodEntry);
+                                widget.foodEntry.calories = int.parse(_calController.text);
+
+                                Navigator.pop(context, widget.foodEntry);
+                            }
                         },
                         child: Text(
                             "SAVE",
@@ -86,11 +90,16 @@ class FoodViewState extends State<FoodView> {
                                   ),
                               ),
                             ),
-                            title: TextField(
-                                controller: _calController,
-                                decoration: InputDecoration(
-                                    hintText: 'Calories',
-                                ),
+                            title: Form(
+                                key: _formKey,
+                              child: TextFormField(
+                                  validator: numberValidator,
+                                  keyboardType: TextInputType.number,
+                                  controller: _calController,
+                                  decoration: InputDecoration(
+                                      hintText: 'Calories',
+                                  ),
+                              ),
                             ),
                         ),
                     ),

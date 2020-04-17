@@ -55,17 +55,6 @@ class SettingsState extends State<Settings> {
 
     TextEditingController _targetController = TextEditingController();
 
-    String _numberValidator(String value) {
-        if(value == null) {
-            return null;
-        }
-        final n = int.tryParse(value);
-        if(n == null || n < 0) {
-            return '"$value" is not a valid number';
-        }
-        return null;
-    }
-
 
     final _formKey = GlobalKey<FormState>();
     _showDialog() async {
@@ -80,7 +69,7 @@ class SettingsState extends State<Settings> {
                                 child: Form(
                                     key: _formKey,
                                   child: TextFormField(
-                                      validator: _numberValidator,
+                                      validator: numberValidator,
                                       autofocus: true,
                                       decoration: InputDecoration(
                                           labelText: 'Target Calories', hintText: 'eg. 2500',
