@@ -29,6 +29,37 @@ class EntryViewState extends State<EntryView> {
         _loadTarget();
     }
 
+    bool congrats = false;
+    Future<Null> _congratsMessage() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        if (DateTime.now().hour >= 22) {
+            if (prefs.containsKey("SX_congratsGiven")) {
+                congrats = prefs.getBool("SX_congratsGiven");
+            } else {
+                prefs.setBool("SX_congratsGiven", false);
+            }
+
+            if (!congrats) {
+                // TODO: display congrats dialog
+                congrats = true;
+                prefs.setBool("SX_congratsGiven", true);
+            }
+        } else {
+
+            if (prefs.containsKey("SX_congratsGiven")) {
+                congrats = prefs.getBool("SX_congratsGiven");
+                if (congrats) {
+                    congrats = false;
+                    prefs.setBool("SX_congratsGiven", false);
+                }
+            } else {
+                prefs.setBool("SX_congratsGiven", false);
+            }
+
+        }
+    }
+
     Future<Null> _saveEntry() async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(widget.diaryEntry.id, jsonEncode(widget.diaryEntry.toJson()));
