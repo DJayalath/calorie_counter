@@ -42,8 +42,43 @@ class EntryViewState extends State<EntryView> {
 
             if (!congrats) {
                 // TODO: display congrats dialog
-                congrats = true;
-                prefs.setBool("SX_congratsGiven", true);
+
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: Text(
+                                "Well done!",
+                                style: TextStyle(
+                                    color: Theme.of(context).textTheme.title.color,
+                                    fontStyle: FontStyle.normal,
+                                ),
+                            ),
+                            content: Text(
+                                "You have stayed under your limit of $target calories today. Keep up the good work!",
+                                style: TextStyle(
+                                    color: Theme.of(context).textTheme.body1.color,
+                                ),
+                            ),
+                            actions: <Widget>[
+                                FlatButton(
+                                    child: Text(
+                                        "CLOSE",
+                                        style: TextStyle(
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                        ),
+                                    ),
+                                    onPressed: () {
+                                        Navigator.pop(context);
+                                    },
+                                )
+                            ],
+                        );
+                    }
+                ).then((val) {
+                    congrats = true;
+                    prefs.setBool("SX_congratsGiven", true);
+                });
             }
         } else {
 
