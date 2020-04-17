@@ -44,6 +44,18 @@ class EntryViewState extends State<EntryView> {
         }
     }
 
+    _pushFoodEntry(meal) async {
+        var result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FoodView(FoodEntry.empty())),
+        );
+        if (result != null) {
+            setState(() {
+                meal.add(result);
+            });
+        }
+    }
+
     Card _buildMealCard(String mealName, ThemeData themeData) {
         List<FoodEntry> meal;
         int total;
@@ -90,14 +102,56 @@ class EntryViewState extends State<EntryView> {
                                     color: themeData.primaryIconTheme.color,
                                 ),
                                 onPressed: () async {
-                                    var result = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => FoodView(FoodEntry.empty())),
-                                    );
-                                    if (result != null) {
-                                        setState(() {
-                                            meal.add(result);
+                                    if (widget.diaryEntry.totalCalories >= target) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                    title: Text(
+                                                        "Are you sure?",
+                                                        style: TextStyle(
+                                                            color: themeData.textTheme.title.color,
+                                                        ),
+                                                    ),
+                                                    content: Text(
+                                                        "You are over your daily calorie limit of $target calories",
+                                                        style: TextStyle(
+                                                            color: themeData.textTheme.body1.color,
+                                                        ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                        FlatButton(
+                                                            child: Text(
+                                                                "CANCEL",
+                                                                style: TextStyle(
+                                                                    color: themeData.primaryIconTheme.color,
+                                                                ),
+                                                            ),
+                                                            onPressed: () {
+                                                                Navigator.pop(context, false);
+                                                            },
+                                                        ),
+                                                        FlatButton(
+                                                            child: Text(
+                                                                "YES",
+                                                                style: TextStyle(
+                                                                    color: themeData.iconTheme.color,
+                                                                ),
+                                                            ),
+                                                            onPressed: () {
+                                                                Navigator.pop(context, true);
+                                                            },
+                                                        )
+                                                    ],
+                                                );
+                                            }
+                                        ).then((val) {
+                                            if (val) {
+                                                _pushFoodEntry(meal);
+                                            }
                                         });
+                                    } else {
+                                        _pushFoodEntry(meal);
                                     }
                                 },
                             ),
