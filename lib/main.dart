@@ -108,27 +108,24 @@ class CalorieCounter extends StatelessWidget {
                 length: 3,
                 child: Scaffold(
                     appBar: AppBar(
-                        flexibleSpace: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                                TabBar(
-                                    indicatorColor: Color(0xfffffffe),
-                                    tabs: [
-                                        Tab(
-                                            text: "Diary",
-                                            icon: Icon(Icons.book),
-                                        ),
-                                        Tab(
-                                            text: "Charts",
-                                            icon: Icon(Icons.insert_chart),
-                                        ),
-                                        Tab(
-                                            text: "Settings",
-                                            icon: Icon(Icons.settings),
-                                        )
-                                    ],
-                                ),
-                            ],
+                        flexibleSpace: SafeArea(
+                          child: TabBar(
+                              indicatorColor: Color(0xfffffffe),
+                              tabs: [
+                                  Tab(
+                                      text: "Diary",
+                                      icon: Icon(Icons.book),
+                                  ),
+                                  Tab(
+                                      text: "Charts",
+                                      icon: Icon(Icons.insert_chart),
+                                  ),
+                                  Tab(
+                                      text: "Settings",
+                                      icon: Icon(Icons.settings),
+                                  )
+                              ],
+                          ),
                         ),
                     ),
                     body: TabBarView(
