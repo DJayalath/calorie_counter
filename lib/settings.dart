@@ -55,6 +55,19 @@ class SettingsState extends State<Settings> {
 
     TextEditingController _targetController = TextEditingController();
 
+    String _numberValidator(String value) {
+        if(value == null) {
+            return null;
+        }
+        final n = int.tryParse(value);
+        if(n == null || n < 0) {
+            return '"$value" is not a valid number';
+        }
+        return null;
+    }
+
+
+    final _formKey = GlobalKey<FormState>();
     _showDialog() async {
         await showDialog<String>(
             context: context,
@@ -64,12 +77,17 @@ class SettingsState extends State<Settings> {
                     content: Row(
                         children: <Widget>[
                             Expanded(
-                                child: TextField(
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                        labelText: 'Target Calories', hintText: 'eg. 2500'
-                                    ),
-                                    controller: _targetController,
+                                child: Form(
+                                    key: _formKey,
+                                  child: TextFormField(
+                                      validator: _numberValidator,
+                                      autofocus: true,
+                                      decoration: InputDecoration(
+                                          labelText: 'Target Calories', hintText: 'eg. 2500',
+                                      ),
+                                      keyboardType: TextInputType.number,
+                                      controller: _targetController,
+                                  ),
                                 ),
                             )
                         ],
@@ -93,12 +111,14 @@ class SettingsState extends State<Settings> {
                                 ),
                             ),
                             onPressed: () {
-                                // TODO: Sanitise input
-                                _saveSetting("target", int.parse(_targetController.text));
-                                setState(() {
-                                  target = int.parse(_targetController.text);
-                                });
-                                Navigator.pop(context);
+                                if (_formKey.currentState.validate()) {
+                                    // TODO: Sanitise input
+                                    _saveSetting("target", int.parse(_targetController.text));
+                                    setState(() {
+                                        target = int.parse(_targetController.text);
+                                    });
+                                    Navigator.pop(context);
+                                }
                             })
                     ],
                 );
