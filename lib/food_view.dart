@@ -23,7 +23,7 @@ class FoodViewState extends State<FoodView> {
     void initState() {
         super.initState();
         _nameController = new TextEditingController(text: widget.foodEntry.name);
-        _calController = new TextEditingController(text: widget.foodEntry.calories.toString());
+        _calController = new TextEditingController(text: (widget.foodEntry.calories > 0) ? widget.foodEntry.calories.toString() : "");
     }
 
 
