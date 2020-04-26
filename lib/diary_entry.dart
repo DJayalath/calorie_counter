@@ -55,6 +55,10 @@ class DiaryEntry {
         var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         return "${days[date.weekday - 1]}";
     }
+    
+    String get shortDate {
+        return "${humanReadableDay.substring(0, 3)} ${date.day}";
+    }
 
     String get humanReadableDate {
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
