@@ -129,23 +129,23 @@ class ChartState extends State<Charts> {
         _diaryEntries.sort((a, b) => a.date.compareTo(b.date));
 
         final breakfastData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalBreakfast)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), day.totalBreakfast)
         ];
 
         final lunchData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalLunch)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), day.totalLunch)
         ];
 
         final dinnerData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalDinner)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), day.totalDinner)
         ];
 
         final otherData = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, day.totalOther)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), day.totalOther)
         ];
 
         final targetLine = [
-            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, target)
+            for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), target)
         ];
 
 
@@ -159,7 +159,7 @@ class ChartState extends State<Charts> {
             avg = avg / (numDataPoints - 1);
 
             avgLine = [
-                for (var day in _diaryEntries) ChartEntry(day.humanReadableDay, avg.round())
+                for (var day in _diaryEntries) ChartEntry(day.humanReadableDay.substring(1, 4), avg.round())
             ];
         }
 
