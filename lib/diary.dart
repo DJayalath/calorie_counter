@@ -18,6 +18,13 @@ class DiaryState extends State<Diary> {
     List<DiaryEntry> _diaryEntries = new List();
     int target = 1800;
 
+    DiaryEntry undoEntry;
+
+    Future<Null> _saveEntry(DiaryEntry diaryEntry) async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString(diaryEntry.id, jsonEncode(diaryEntry.toJson()));
+    }
+
     @override
     void initState() {
         super.initState();
@@ -123,8 +130,26 @@ class DiaryState extends State<Diary> {
     }
 
     Future<Null> _removeEntry(DiaryEntry diaryEntry) async {
+        undoEntry = diaryEntry;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove(diaryEntry.id);
+
+        final snackBar = SnackBar(
+            content: Text('Diary entry deleted'),
+            action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                    setState(() {
+                        _diaryEntries.add(undoEntry);
+                    });
+                    _saveEntry(diaryEntry);
+                    // Some code to undo the change.
+                },
+            ),
+        );
+
+        Scaffold.of(context).showSnackBar(snackBar);
+
         await _loadDiaryEntries();
     }
 

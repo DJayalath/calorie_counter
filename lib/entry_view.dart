@@ -23,6 +23,9 @@ class EntryViewState extends State<EntryView> {
 
     int target = 1800;
 
+    FoodEntry undoMeal;
+
+
     @override
     void initState() {
         super.initState();
@@ -57,8 +60,23 @@ class EntryViewState extends State<EntryView> {
     }
 
     Card _buildMealCard(String mealName, ThemeData themeData) {
+
         List<FoodEntry> meal;
         int total;
+
+        final snackBar = SnackBar(
+            content: Text('Food entry deleted'),
+            action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                    setState(() {
+                        meal.add(undoMeal);
+                    });
+                    // Some code to undo the change.
+                },
+            ),
+        );
+
         switch (mealName) {
             case "Breakfast":
                 meal = widget.diaryEntry.breakfast;
@@ -190,9 +208,11 @@ class EntryViewState extends State<EntryView> {
                                         color: themeData.iconTheme.color,
                                     ),
                                     onPressed: () {
+                                        undoMeal = meal.elementAt(index);
                                         setState(() {
                                             meal.removeAt(index);
                                         });
+                                        Scaffold.of(context).showSnackBar(snackBar);
                                     },
                                 ),
                                 onTap: () async {
